@@ -1,12 +1,8 @@
-import Image from "next/image";
-import Login from "./ui/(auth)/login/page";
-import { auth } from "./api/auth/[...nextauth]/route";
+import * as route from "./api/auth/[...nextauth]/route";
 
 export default function Home() {
-  let session = auth()
+  let session = route.auth();
   console.log(session);
-  
-  return (
-    <Login/>
-  );
+
+  return <>hello</>;
 }
