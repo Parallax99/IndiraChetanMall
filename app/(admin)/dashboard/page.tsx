@@ -1,3 +1,3 @@
-export default function Dashboard(params: any) {
+export default function Page(params: any) {
   return <>DASHBOARD</>;
 }

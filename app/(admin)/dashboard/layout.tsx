@@ -1,10 +1,14 @@
-import Sidebar from "@/app/components/admin/sidebar/Sidebar";
-import Dashboard from "./page";
+import Navbar from "@/app/components/navbar/navbar";
+import { Grid } from "@mui/material";
 
-export default function layout() {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
-      <Sidebar />
-    </>
+    <Grid container spacing={2}>
+      <Navbar>{children}</Navbar>
+    </Grid>
   );
 }
