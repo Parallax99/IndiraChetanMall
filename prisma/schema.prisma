@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
@@ -36,4 +37,20 @@ model Address {
   isBilling Int? @map("is_billing")
   userId String @map("user_id")
   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+}
+
+model Categories {
+  id String @id @default(cuid())@map("category_id")
+  categoryName String @map("category_name")
+  image Bytes @db.ByteA 
+  isFeatured Boolean @default(false)@map("is_featured")
+  subCategories SubCategories[]
+}
+
+model SubCategories {
+  id String @id @default(cuid()) @map("subcategory_id")
+  subCategoryName String @map("sub_categoryname")
+  image Bytes @db.ByteA
+  category Categories @relation(fields: [categoryId], references: [id])
+  categoryId String 
 }
