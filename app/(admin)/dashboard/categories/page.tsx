@@ -22,7 +22,7 @@ const mutateCategoriesData = () => {
     {
       field: "id",
       headerName: "CategoryId",
-      width: 90,
+      width: 150,
       editable: false,
     },
     {
@@ -40,7 +40,7 @@ const mutateCategoriesData = () => {
     {
       field: "isFeatured",
       headerName: "Featured",
-      width: 90,
+      width: 150,
       editable: false,
     },
   ];

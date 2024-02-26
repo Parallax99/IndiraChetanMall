@@ -6,9 +6,5 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <Grid container spacing={2}>
-      <Navbar>{children}</Navbar>
-    </Grid>
-  );
+  return <Navbar>{children}</Navbar>;
 }
