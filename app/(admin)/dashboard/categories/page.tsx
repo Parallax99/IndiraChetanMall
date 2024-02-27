@@ -1,4 +1,4 @@
-import DataGridTable from "@/app/components/utils/DataGrid";
+import CategoriesComponent from "@/app/components/admin/Categories/CategoriesComponent";
 import { getAllCategories } from "@/app/lib/prismaDB/repo/CategoryRepo";
 import { GridColDef } from "@mui/x-data-grid";
 import { Categories } from "@prisma/client";
@@ -50,5 +50,5 @@ const mutateCategoriesData = () => {
 
 export default function Page() {
   let { rows, columns } = mutateCategoriesData();
-  return <DataGridTable rows={rows} columns={columns} />;
+  return <CategoriesComponent data={{ rows: rows, columns: columns }} />;
 }
