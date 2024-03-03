@@ -1,23 +1,58 @@
 "use client";
-import { CloudUploadRounded } from "@mui/icons-material";
+import { CloudUploadOutlined } from "@mui/icons-material";
 import {
   Box,
   Button,
   Checkbox,
   FormControlLabel,
   FormGroup,
-  Grid,
-  Input,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { File } from "buffer";
+import { Controller, useForm } from "react-hook-form";
 
 export default function AddCategory() {
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log(e.target);
+  type CategoryName = {
+    categoryName: string;
+    image: any;
+    isFeatured: Boolean;
+  };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CategoryName>({
+    defaultValues: {
+      categoryName: "",
+      isFeatured: false,
+    },
+  });
+  const onSubmit = (data: any) => console.log(data);
+
+  // Validation rule for image files
+  const imageValidation = {
+    required: "An image file is required",
+    validate: (fileList: FileList) => {
+      if (fileList.length === 0) {
+        return "An image file is required";
+      }
+      const file = fileList[0];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/svg+xml",
+      ];
+      console.log(file.type);
+
+      if (!allowedTypes.includes(file.type)) {
+        return "Invalid file type. Please select an image (jpeg, png, gif, svg).";
+      }
+      return true;
+    },
   };
 
   return (
@@ -36,44 +71,48 @@ export default function AddCategory() {
               <Grid2 container spacing={2}>
                 <Grid2 xs={4}></Grid2>
                 <Grid2 xs={4}>
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid2 container spacing={2}>
                       <Grid2 xs={12}>
-                        <TextField
-                          required
-                          label="Category Name"
-                          id="Category Name"
+                        <Controller
                           name="categoryName"
-                          sx={{ width: "100%" }}
+                          control={control}
+                          render={({ field }) => (
+                            <TextField
+                              {...field}
+                              required
+                              label="Category Name"
+                              sx={{ width: "100%" }}
+                            />
+                          )}
                         />
                       </Grid2>
                       <Grid2 xs={12}>
-                        <Box
-                          component="section"
-                          sx={{
-                            p: 2,
-                            border: "1px dashed grey",
-                            textAlign: "center",
-                            flexDirection: "row",
-                          }}
-                        >
-                          <Button
-                            component="label"
-                            role={undefined}
-                            variant="outlined"
-                            tabIndex={-1}
-                            startIcon={<CloudUploadRounded />}
-                            sx={{ textAlign: "center" }}
-                          >
-                            Upload file
-                            <Input
-                              sx={{ display: "none" }}
-                              name="categoryImage"
+                        <Controller
+                          name="image"
+                          control={control}
+                          rules={imageValidation}
+                          render={({
+                            field: { value, onChange, ...field },
+                          }) => (
+                            <TextField
+                              {...field}
                               type="file"
+                              value={value?.fileName}
+                              InputLabelProps={{ shrink: true }}
+                              variant="outlined"
+                              fullWidth
+                              onChange={(event) => {
+                                onChange(event.target?.files[0]);
+                              }}
+                              margin="normal"
+                              error={!!errors.image}
+                              helperText={
+                                errors.image ? errors.image.message : ""
+                              }
                             />
-                          </Button>
-                          <div>Upload Category Image</div>
-                        </Box>
+                          )}
+                        />
                       </Grid2>
                       <Grid2 xs={12}>
                         <FormGroup>
